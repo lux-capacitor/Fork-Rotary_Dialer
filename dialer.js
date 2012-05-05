@@ -2,6 +2,10 @@ function $(sel) {
   return document.querySelector(sel);
 }
 
+function $$(sel) {
+  return document.querySelectorAll(sel);
+}
+
 function Dialer(sel) {
   this.elem = $(sel);
 
@@ -15,14 +19,19 @@ function Dialer(sel) {
 }
 
 Dialer.prototype = {
+  digit: null,
   rotating: false,
-  startAngle: null,
   lastAngle: null,
   totalAngle: null,
 
   mousedown: function (e) {
+    var digit = this.findDigit(e);
+    if (digit === null)
+      return;
+
+    this.digit = digit;
     this.rotating = true;
-    this.startAngle = this.lastAngle = this.getAngle(e);
+    this.lastAngle = this.getAngle(e);
     this.totalAngle = 0;
     this.elem.classList.add("rotating");
     e.preventDefault();
@@ -41,7 +50,7 @@ Dialer.prototype = {
 
   mouseup: function (e) {
     this.rotating = false;
-    this.startAngle = this.lastAngle = this.totalAngle = null;
+    this.lastAngle = this.totalAngle = null;
     this.elem.classList.remove("rotating");
     this.elem.style.MozTransform = "";
   },
@@ -60,5 +69,20 @@ Dialer.prototype = {
       return 360 - to + from;
 
     return to - from;
+  },
+
+  findDigit: function (e) {
+    var x = e.clientX;
+    var y = e.clientY;
+    var digits = $$(".digit");
+
+    for (var i = 0; i < digits.length; i++) {
+      var rect = digits[i].getBoundingClientRect();
+      if (rect.left <= x && rect.width + rect.left >= x &&
+          rect.top <= y && rect.height + rect.top >= y)
+        return i == 9 ? 0 : i + 1;
+    }
+
+    return null;
   }
 };
