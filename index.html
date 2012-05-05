@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+
+<meta charset=utf-8 />
+<title>test</title>
+
+<script type="text/javascript" src="dialer.js"></script>
+
+<style>
+  * {
+    -moz-box-sizing: border-box;
+  }
+  html {
+    background: #000;
+  }
+  #phone {
+    position: relative;
+  }
+  #dialer {
+    position: relative;
+    width: 300px; height: 300px;
+    border-radius: 0%;
+    padding: 70px;
+    mask: url(#holes);
+    -moz-transform: rotate(0deg);
+    border-radius: 50%;
+    background-color: #ccc;
+    background-image: -moz-repeating-linear-gradient(center top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 6%, rgba(255, 255, 255, 0.1) 7.5%), -moz-repeating-linear-gradient(left center , transparent 0%, transparent 4%, rgba(0, 0, 0, 0.03) 4.5%), -moz-repeating-linear-gradient(left center , rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 1.2%, rgba(255, 255, 255, 0.15) 2.2%);
+  }
+  #dialer:not(.rotating) {
+    -moz-transition: 1s -moz-transform ease-out;
+  }
+  #dock {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 300px; height: 300px;
+    background-color: black;
+    z-index: -1;
+  }
+  .hole {
+    position: absolute;
+    width: 54px; height: 54px;
+    background: -moz-radial-gradient(white, black);
+    bottom: 8px; left: -moz-calc(50% - 27px);
+    border-radius: 50%;
+    -moz-transform-origin: 27px -87px;
+  }
+  .hole.b2 { -moz-transform: rotate(30deg); }
+  .hole.b3 { -moz-transform: rotate(60deg); }
+  .hole.b4 { -moz-transform: rotate(90deg); }
+  .hole.b5 { -moz-transform: rotate(120deg); }
+  .hole.b6 { -moz-transform: rotate(150deg); }
+  .hole.b7 { -moz-transform: rotate(180deg); }
+  .hole.b8 { -moz-transform: rotate(210deg); }
+  .hole.b9 { -moz-transform: rotate(240deg); }
+  .hole.b0 { -moz-transform: rotate(270deg); }
+
+  .digit {
+    color: white;
+    display: block;
+    line-height: 54px;
+    width: 54px; height: 54px;
+    text-align: center;
+    position: absolute;
+    font-size: 30px;
+    top: 150px; left: 150px;
+    margin-top: -27px; margin-left: -27px;
+  }
+
+  .digit.b0 { -moz-transform: translate(0, 115px);}
+  .digit.b9 { -moz-transform: translate(-57px, 99px); }
+  .digit.b8 { -moz-transform: translate(-99px, 57px); }
+  .digit.b7 { -moz-transform: translate(-115px, 0px); }
+  .digit.b6 { -moz-transform: translate(-99px, -57px); }
+  .digit.b5 { -moz-transform: translate(-57px, -99px); }
+  .digit.b4 { -moz-transform: translate(0, -115px);}
+  .digit.b3 { -moz-transform: translate(57px, -99px); }
+  .digit.b2 { -moz-transform: translate(99px, -57px); }
+  .digit.b1 { -moz-transform: translate(115px, 0px); }
+
+  #center {
+    width: 100%;
+    height: 100%;
+    border: 6px solid rgba(0,0,0,0.4);
+    border-radius: 50%;
+
+    box-shadow: inset rgba(0,0,0,0.2) 0px 0px 6px 6px;
+    background-color: rgb(229, 229, 229);
+    font: "Helvetica Neue",Arial,Helvetica,Geneva,sans-serif;
+    font-size: 100px;
+    line-height: 150px;
+    text-shadow: 0px -1px 0px rgba(102, 102, 102, 0.5), 0px 2px 1px rgba(255, 255, 255, 0.6);
+    text-align: center;
+    color: rgb(51, 51, 51);
+    background-color: rgb(229, 229, 229);
+    background-image: -moz-repeating-linear-gradient(center top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 6%, rgba(255, 255, 255, 0.1) 7.5%), -moz-repeating-linear-gradient(left center , transparent 0%, transparent 4%, rgba(0, 0, 0, 0.03) 4.5%), -moz-repeating-linear-gradient(left center , rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 1.2%, rgba(255, 255, 255, 0.15) 2.2%);
+  }
+
+  #number {
+    display: block;
+    font-size: 30px;
+    margin: 10px 10px 30px;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: rgb(229, 229, 229);
+  }
+
+</style>
+
+<div id="number">03065887277</div>
+
+<div id="phone">
+
+  <div id="dialer">
+    <div id="center">
+      ☎
+    </div>
+    <span class="hole b1"></span>
+    <span class="hole b2"></span>
+    <span class="hole b3"></span>
+    <span class="hole b4"></span>
+    <span class="hole b5"></span>
+    <span class="hole b6"></span>
+    <span class="hole b7"></span>
+    <span class="hole b8"></span>
+    <span class="hole b9"></span>
+    <span class="hole b0"></span>
+  </div>
+
+  <div id="dock">
+    <span class="digit b1">1</span>
+    <span class="digit b2">2</span>
+    <span class="digit b3">3</span>
+    <span class="digit b4">4</span>
+    <span class="digit b5">5</span>
+    <span class="digit b6">6</span>
+    <span class="digit b7">7</span>
+    <span class="digit b8">8</span>
+    <span class="digit b9">9</span>
+    <span class="digit b0">0</span>
+  </div>
+
+
+</div>
+
+<svg>  
+  <mask id="holes" maskUnits="objectBoundingBox" maskContentUnits="objectBoundingBox">  
+    <rect x="0" y="0" width="1" height="1" fill="white"/>  
+    <circle cx="0.5" cy="0.88" r="0.08" id="circle" fill="black"/>
+    <circle transform="rotate(30, 0.5, 0.5)" cx="0.5" cy="0.88" r="0.08" id="circle" fill="black"/>
+    <circle transform="rotate(60, 0.5, 0.5)" cx="0.5" cy="0.88" r="0.08" id="circle" fill="black"/>
+    <circle transform="rotate(90, 0.5, 0.5)" cx="0.5" cy="0.88" r="0.08" id="circle" fill="black"/>
+    <circle transform="rotate(120, 0.5, 0.5)" cx="0.5" cy="0.88" r="0.08" id="circle" fill="black"/>
+    <circle transform="rotate(150, 0.5, 0.5)" cx="0.5" cy="0.88" r="0.08" id="circle" fill="black"/>
+    <circle transform="rotate(180, 0.5, 0.5)" cx="0.5" cy="0.88" r="0.08" id="circle" fill="black"/>
+    <circle transform="rotate(210, 0.5, 0.5)" cx="0.5" cy="0.88" r="0.08" id="circle" fill="black"/>
+    <circle transform="rotate(240, 0.5, 0.5)" cx="0.5" cy="0.88" r="0.08" id="circle" fill="black"/>
+    <circle transform="rotate(270, 0.5, 0.5)" cx="0.5" cy="0.88" r="0.08" id="circle" fill="black"/>
+  </mask>  
+</svg>
+
+<script type="text/javascript">
+  new Dialer("#dialer");
+</script>

@@ -1,0 +1,24 @@
+{
+  "name": "Rotary Dialer",
+  "description": "Rotary Dialer",
+  "launch_path": "/",
+  "developer": {
+    "name": "Paul Rouget & Tim Taubert",
+    "url": "https://github.com/andreasgal/gaia"
+  },
+  "permissions": [
+    "telephony",
+    "power",
+    "mozApps"
+  ],
+  "locales": {
+    "en-US": {
+      "name": "Rotary Dialer",
+      "description": "Rotary Dialer"
+    }
+  },
+  "default_locale": "en-US",
+  "icons": {
+    "120": "/Phone.png"
+  }
+}

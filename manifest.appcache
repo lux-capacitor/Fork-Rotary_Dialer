@@ -1,0 +1,11 @@
+CACHE MANIFEST
+# Version 0ba6d0e97ad61c75d23fdb21f3c93ea5
+Phone.png
+dialer.js
+index.html
+
+manifest.json
+http://gaiamobile.org/webapi.js
+NETWORK:
+http://*
+https://*
