@@ -6,14 +6,15 @@ function $$(sel) {
   return document.querySelectorAll(sel);
 }
 
-function Dialer(sel) {
-  this.elem = $(sel);
+function Dialer(dial, number) {
+  this.dial = $(dial);
+  this.number = $(number);
 
-  var rect = this.elem.getBoundingClientRect();
+  var rect = this.dial.getBoundingClientRect();
   this.centerX = rect.left + rect.width / 2;
   this.centerY = rect.top + rect.height / 2;
 
-  this.elem.addEventListener("mousedown", this.mousedown.bind(this));
+  this.dial.addEventListener("mousedown", this.mousedown.bind(this));
   addEventListener("mousemove", this.mousemove.bind(this));
   addEventListener("mouseup", this.mouseup.bind(this));
 }
@@ -33,7 +34,7 @@ Dialer.prototype = {
     this.rotating = true;
     this.lastAngle = this.getAngle(e);
     this.totalAngle = 0;
-    this.elem.classList.add("rotating");
+    this.dial.classList.add("rotating");
     e.preventDefault();
   },
 
@@ -44,15 +45,19 @@ Dialer.prototype = {
     var angle = this.getAngle(e);
     var diff = this.getAngleDiff(this.lastAngle, angle);
     this.totalAngle += diff;
-    this.elem.style.MozTransform = "rotate(" + Math.max(0, this.totalAngle) + "deg)";
+    this.dial.style.MozTransform = "rotate(" + Math.max(0, this.totalAngle) + "deg)";
     this.lastAngle = angle;
   },
 
   mouseup: function (e) {
+    if (e.clientX > this.centerX && e.clientY > this.centerY)
+      this.number.innerHTML += this.digit;
+
     this.rotating = false;
     this.lastAngle = this.totalAngle = null;
-    this.elem.classList.remove("rotating");
-    this.elem.style.MozTransform = "";
+    this.dial.classList.remove("rotating");
+    this.dial.style.MozTransform = "";
+    navigator.mozVibrate([100, 50, 100, 50, 100, 50, 100, 50, 100, 50, 100, 50, 100]);
   },
 
   getAngle: function (e) {
