@@ -46,8 +46,9 @@ var Dialer = {
     this.maxAngle = 135;
     var rect = hole.getBoundingClientRect();
     var holeAngle = this.getAngle(rect.left + rect.width / 2, rect.top + rect.height / 2);
+    console.log("holeAngle", holeAngle);
 
-    if (holeAngle >= 180)
+    if (holeAngle >= 135)
       this.maxAngle += 360 - holeAngle;
     else
       this.maxAngle -= holeAngle;
