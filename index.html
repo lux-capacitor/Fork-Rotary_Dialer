@@ -3,8 +3,6 @@
 <meta charset=utf-8 />
 <title>test</title>
 
-<script type="text/javascript" src="dialer.js"></script>
-
 <style>
   * {
     -moz-box-sizing: border-box;
@@ -15,6 +13,8 @@
   #phone {
     position: relative;
     margin: 0 auto;
+    width: 300px;
+    height: 300px;
   }
   #dialer {
     position: relative;
@@ -92,9 +92,26 @@
     line-height: 150px;
     text-shadow: 0px -1px 0px rgba(102, 102, 102, 0.5), 0px 2px 1px rgba(255, 255, 255, 0.6);
     text-align: center;
-    color: rgb(51, 51, 51);
+    color: #66ba70;
+    -moz-transition: 500ms color ease-out;
     background-color: rgb(229, 229, 229);
     background-image: -moz-repeating-linear-gradient(center top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 6%, rgba(255, 255, 255, 0.1) 7.5%), -moz-repeating-linear-gradient(left center , transparent 0%, transparent 4%, rgba(0, 0, 0, 0.03) 4.5%), -moz-repeating-linear-gradient(left center , rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 1.2%, rgba(255, 255, 255, 0.15) 2.2%);
+  }
+
+  #stop {
+    position: absolute;
+    font-size: 200px;
+    right: 90px;
+    bottom: 14px;
+    width: 10px;
+    height: 70px;
+    background: #fff;
+    border: 1px solid rgba(0,0,0,0.4);
+    -moz-transform: rotate(-29deg);
+  }
+
+  #center.rotating {
+    color: rgb(51, 51, 51);
   }
 
   #number {
@@ -113,11 +130,8 @@
 <div id="number"></div>
 
 <div id="phone">
-
   <div id="dialer">
-    <div id="center">
-      ☎
-    </div>
+    <div id="center">☎</div>
     <span class="hole b1"></span>
     <span class="hole b2"></span>
     <span class="hole b3"></span>
@@ -143,7 +157,7 @@
     <span class="digit b0">0</span>
   </div>
 
-
+  <div id="stop"></div>
 </div>
 
 <svg>  
@@ -162,6 +176,4 @@
   </mask>  
 </svg>
 
-<script type="text/javascript">
-  new Dialer("#dialer", "#number");
-</script>
+<script type="text/javascript" src="dialer.js"></script>

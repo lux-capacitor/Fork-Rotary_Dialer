@@ -6,9 +6,10 @@ function $$(sel) {
   return document.querySelectorAll(sel);
 }
 
-function Dialer(dial, number) {
-  this.dial = $(dial);
-  this.number = $(number);
+function Dialer() {
+  this.dial = $("#dialer");
+  this.number = $("#number");
+  this.center = $("#center");
 
   var rect = this.dial.getBoundingClientRect();
   this.centerX = rect.left + rect.width / 2;
@@ -20,49 +21,83 @@ function Dialer(dial, number) {
 }
 
 Dialer.prototype = {
+  hole: null,
   digit: null,
+  moving: false,
   rotating: false,
   lastAngle: null,
   totalAngle: null,
+  maxAngle: null,
 
   mousedown: function (e) {
+    if (this.rotating || this.moving)
+      return;
+
     var digit = this.findDigit(e);
     if (digit === null)
       return;
 
+    var hole = this.findHole(e);
+    if (hole === null)
+      return;
+
+    this.maxAngle = 135;
+    var rect = hole.getBoundingClientRect();
+    var holeAngle = this.getAngle(rect.left + rect.width / 2, rect.top + rect.height / 2);
+
+    if (holeAngle >= 180)
+      this.maxAngle += 360 - holeAngle;
+    else
+      this.maxAngle -= holeAngle;
+
     this.digit = digit;
-    this.rotating = true;
-    this.lastAngle = this.getAngle(e);
+    this.hole = hole;
+    this.rotating = this.moving = true;
+    this.lastAngle = this.getAngle(e.clientX, e.clientY);
     this.totalAngle = 0;
     this.dial.classList.add("rotating");
+    this.center.classList.add("rotating");
     e.preventDefault();
   },
 
   mousemove: function (e) {
-    if (!this.rotating)
+    if (!this.rotating || !this.moving)
       return;
 
-    var angle = this.getAngle(e);
+    var angle = this.getAngle(e.clientX, e.clientY);
     var diff = this.getAngleDiff(this.lastAngle, angle);
     this.totalAngle += diff;
-    this.dial.style.MozTransform = "rotate(" + Math.max(0, this.totalAngle) + "deg)";
+
+    var rotation = Math.min(this.maxAngle, Math.max(0, this.totalAngle));
+    this.dial.style.MozTransform = "rotate(" + rotation + "deg)";
     this.lastAngle = angle;
   },
 
   mouseup: function (e) {
-    if (e.clientX > this.centerX && e.clientY > this.centerY)
+    if (!this.rotating || !this.moving)
+      return;
+
+    var rect = this.hole.getBoundingClientRect();
+    if (rect.left > this.centerX && rect.top > this.centerY)
       this.number.innerHTML += this.digit;
 
-    this.rotating = false;
+    this.moving = false;
     this.lastAngle = this.totalAngle = null;
     this.dial.classList.remove("rotating");
+    this.center.classList.remove("rotating");
     this.dial.style.MozTransform = "";
     navigator.mozVibrate([100, 50, 100, 50, 100, 50, 100, 50, 100, 50, 100, 50, 100]);
+
+    var self = this;
+    this.dial.addEventListener("transitionend", function onEnd() {
+      self.dial.removeEventListener("transitionend", onEnd);
+      self.rotating = false;
+    });
   },
 
-  getAngle: function (e) {
-    var x = e.clientX - this.centerX;
-    var y = e.clientY - this.centerY;
+  getAngle: function (x, y) {
+    x -= this.centerX;
+    y -= this.centerY;
     return 180 - (Math.atan2(x, y) * 180 / Math.PI);
   },
 
@@ -89,5 +124,22 @@ Dialer.prototype = {
     }
 
     return null;
+  },
+
+  findHole: function (e) {
+    var x = e.clientX;
+    var y = e.clientY;
+    var holes = $$(".hole");
+
+    for (var i = 0; i < holes.length; i++) {
+      var rect = holes[i].getBoundingClientRect();
+      if (rect.left <= x && rect.width + rect.left >= x &&
+          rect.top <= y && rect.height + rect.top >= y)
+        return holes[i];
+    }
+
+    return null;
   }
 };
+
+new Dialer();

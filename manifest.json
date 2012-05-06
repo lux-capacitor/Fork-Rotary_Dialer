@@ -4,7 +4,7 @@
   "launch_path": "/",
   "developer": {
     "name": "Paul Rouget & Tim Taubert",
-    "url": "https://github.com/andreasgal/gaia"
+    "url": "https://github.com/ttaubert/rotary-dialer"
   },
   "permissions": [
     "telephony",
