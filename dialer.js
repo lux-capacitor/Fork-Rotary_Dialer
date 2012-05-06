@@ -16,6 +16,7 @@ function Dialer() {
   this.centerY = rect.top + rect.height / 2;
 
   this.dial.addEventListener("mousedown", this.mousedown.bind(this));
+  this.center.addEventListener("click", this.click.bind(this));
   addEventListener("mousemove", this.mousemove.bind(this));
   addEventListener("mouseup", this.mouseup.bind(this));
 }
@@ -79,7 +80,7 @@ Dialer.prototype = {
 
     var rect = this.hole.getBoundingClientRect();
     if (rect.left > this.centerX && rect.top > this.centerY)
-      this.number.innerHTML += this.digit;
+      this.number.textContent += this.digit;
 
     this.moving = false;
     this.lastAngle = this.totalAngle = null;
@@ -93,6 +94,22 @@ Dialer.prototype = {
       self.dial.removeEventListener("transitionend", onEnd);
       self.rotating = false;
     });
+  },
+
+  click: function (e) {
+    if (this.rotating || this.moving)
+      return;
+
+    var classes = this.center.classList;
+    if (classes.contains("dialing")) {
+      classes.remove("dialing");
+      this.number.textContent = "";
+      this.call.hangUp();
+      this.call = null;
+    } else {
+      classes.add("dialing");
+      this.call = navigator.mozTelephony.dial(this.number.textContent);
+    }
   },
 
   getAngle: function (x, y) {
