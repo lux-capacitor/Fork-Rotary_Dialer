@@ -10,6 +10,7 @@ function Dialer() {
   this.dial = $("#dialer");
   this.number = $("#number");
   this.center = $("#center");
+  this.player = $("#player");
 
   var rect = this.dial.getBoundingClientRect();
   this.centerX = rect.left + rect.width / 2;
@@ -87,6 +88,8 @@ Dialer.prototype = {
     this.dial.classList.remove("rotating");
     this.center.classList.remove("rotating");
     this.dial.style.MozTransform = "";
+
+    this.player.play();
     navigator.mozVibrate([100, 50, 100, 50, 100, 50, 100, 50, 100, 50, 100, 50, 100]);
 
     var self = this;

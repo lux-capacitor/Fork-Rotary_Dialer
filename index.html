@@ -10,6 +10,9 @@
   html {
     background: #000;
   }
+  #player {
+    display: none;
+  }
   #phone {
     position: relative;
     margin: 100px auto 0;
@@ -30,7 +33,7 @@
     background-image: -moz-repeating-linear-gradient(center top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 6%, rgba(255, 255, 255, 0.1) 7.5%), -moz-repeating-linear-gradient(left center , transparent 0%, transparent 4%, rgba(0, 0, 0, 0.03) 4.5%), -moz-repeating-linear-gradient(left center , rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 1.2%, rgba(255, 255, 255, 0.15) 2.2%);
   }
   #dialer:not(.rotating) {
-    -moz-transition: 1s -moz-transform ease-out;
+    -moz-transition: 800ms -moz-transform ease-out;
   }
   #dock {
     position: absolute;
@@ -165,6 +168,8 @@
 
   <div id="stop"></div>
 </div>
+
+<audio id="player" src="rewind.ogg"></audio>
 
 <svg>  
   <mask id="holes" maskUnits="objectBoundingBox" maskContentUnits="objectBoundingBox">  
