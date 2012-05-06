@@ -6,23 +6,7 @@ function $$(sel) {
   return document.querySelectorAll(sel);
 }
 
-function Dialer() {
-  this.dial = $("#dialer");
-  this.number = $("#number");
-  this.center = $("#center");
-  this.player = $("#player");
-
-  var rect = this.dial.getBoundingClientRect();
-  this.centerX = rect.left + rect.width / 2;
-  this.centerY = rect.top + rect.height / 2;
-
-  this.dial.addEventListener("mousedown", this.mousedown.bind(this));
-  this.center.addEventListener("click", this.click.bind(this));
-  addEventListener("mousemove", this.mousemove.bind(this));
-  addEventListener("mouseup", this.mouseup.bind(this));
-}
-
-Dialer.prototype = {
+var Dialer = {
   hole: null,
   digit: null,
   moving: false,
@@ -30,6 +14,22 @@ Dialer.prototype = {
   lastAngle: null,
   totalAngle: null,
   maxAngle: null,
+
+  init: function () {
+    this.dial = $("#dialer");
+    this.number = $("#number");
+    this.center = $("#center");
+    this.player = $("#player");
+
+    var rect = this.dial.getBoundingClientRect();
+    this.centerX = rect.left + rect.width / 2;
+    this.centerY = rect.top + rect.height / 2;
+
+    this.dial.addEventListener("mousedown", this.mousedown.bind(this));
+    this.center.addEventListener("click", this.click.bind(this));
+    addEventListener("mousemove", this.mousemove.bind(this));
+    addEventListener("mouseup", this.mouseup.bind(this));
+  },
 
   mousedown: function (e) {
     if (this.rotating || this.moving)
@@ -162,4 +162,4 @@ Dialer.prototype = {
   }
 };
 
-new Dialer();
+Dialer.init();
